@@ -7,14 +7,16 @@ class StrokeText extends StatelessWidget {
   final Color strokeColor;
   final double size;
   final FontWeight fontWeight;
+  final double strokeWidth;
 
   const StrokeText(
     this.text, {
     super.key,
     this.color = AppColors.white,
-    this.strokeColor = AppColors.aqua,
+    this.strokeColor = AppColors.purple,
     this.size = 30,
-    this.fontWeight = FontWeight.w800,
+    this.fontWeight = FontWeight.w400,
+    this.strokeWidth = 3,
   });
 
   @override
@@ -22,17 +24,19 @@ class StrokeText extends StatelessWidget {
     return Stack(
       children: [
         Text(
+          textAlign: TextAlign.center,
           text,
           style: Theme.of(context).textTheme.headlineLarge!.copyWith(
             fontSize: size,
             fontWeight: fontWeight,
             foreground: Paint()
               ..style = PaintingStyle.stroke
-              ..strokeWidth = 6
+              ..strokeWidth = strokeWidth
               ..color = strokeColor,
           ),
         ),
         Text(
+          textAlign: TextAlign.center,
           text,
           style: Theme.of(context).textTheme.headlineLarge!.copyWith(
             fontSize: size,

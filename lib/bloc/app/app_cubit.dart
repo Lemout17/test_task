@@ -6,7 +6,7 @@ import 'package:test_task/models/level_model.dart';
 part 'app_state.dart';
 
 class AppCubit extends Cubit<AppState> {
-  AppCubit() : super(AppState(levels: Levels.list));
+  AppCubit() : super(AppState(levels: Levels.levels));
 
   // void saveLevels() async {
   //   var box = await Hive.openBox('box');
@@ -38,23 +38,23 @@ class AppCubit extends Cubit<AppState> {
   }
 
   void finishLevel(LevelModel level, int stars) {
-    List<LevelModel> updatedLevels = List.from(state.levels);
+    // List<LevelModel> updatedLevels = List.from(state.levels);
 
-    int currentIndex = updatedLevels.indexWhere((l) => l == level);
+    // int currentIndex = updatedLevels.indexWhere((l) => l == level);
 
-    if (currentIndex != -1) {
-      updatedLevels[currentIndex] = updatedLevels[currentIndex].copyWith(
-        stars: stars,
-      );
+    // if (currentIndex != -1) {
+    //   updatedLevels[currentIndex] = updatedLevels[currentIndex].copyWith(
+    //     stars: stars,
+    //   );
 
-      if (stars > 0 && currentIndex < updatedLevels.length - 1) {
-        updatedLevels[currentIndex + 1] = updatedLevels[currentIndex + 1]
-            .copyWith(isLock: false);
-      }
-    }
+    //   if (stars > 0 && currentIndex < updatedLevels.length - 1) {
+    //     updatedLevels[currentIndex + 1] = updatedLevels[currentIndex + 1]
+    //         .copyWith(isLock: false);
+    //   }
+    // }
 
-    // saveLevels();
-    emit(state.copyWith(levels: updatedLevels));
+    // // saveLevels();
+    // emit(state.copyWith(levels: updatedLevels));
   }
 
   void addScore(int points) {

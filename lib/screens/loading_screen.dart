@@ -5,9 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:test_task/bloc/app/app_cubit.dart';
 import 'package:test_task/const/assets.dart';
-import 'package:test_task/screens/menu_screen.dart';
+import 'package:test_task/screens/main_screen.dart';
 import 'package:test_task/theme/app_colors.dart';
 import 'package:test_task/utils/layout_wrapper.dart';
+import 'package:test_task/utils/size_config.dart';
 import 'package:test_task/widgets/animated_loader.dart';
 import 'package:test_task/widgets/common/stroke_text.dart';
 
@@ -33,17 +34,6 @@ class _LoadingScreenState extends State<LoadingScreen> {
   //     context.read<AudioService>().stopBackgroundMusic();
   //     context.read<AudioService>().loopSound('background_sound');
 
-  //     Future.delayed(const Duration(seconds: 0), () {
-  //       Navigator.pushReplacement(
-  //         context,
-  //         PageRouteBuilder(
-  //           pageBuilder: (context, animation1, animation2) =>
-  //               const MenuScreen(),
-  //           transitionDuration: Duration.zero,
-  //           reverseTransitionDuration: Duration.zero,
-  //         ),
-  //       );
-  //     });
   //   });
   // }
 
@@ -57,18 +47,25 @@ class _LoadingScreenState extends State<LoadingScreen> {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             Padding(
-              padding: const EdgeInsets.all(87),
+              padding: EdgeInsets.symmetric(horizontal: SizeConfig.w(10)),
               child: AnimatedGradientLoader(
                 duration: Duration(seconds: 5),
-                height: 30,
-                borderRadius: 16,
-                gradient: LinearGradient(colors: [Colors.pink, Colors.orange]),
-                onCompleted: () => print('Готово'),
+                height: SizeConfig.h(5.5),
+                borderRadiusOutter: 16,
+                borderRadiusInner: 16,
+                onCompleted: navigateToMenu,
               ),
             ),
+            SizedBox(height: SizeConfig.h(5)),
           ],
         ),
       ),
+    );
+  }
+
+  void navigateToMenu() {
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(builder: (context) => const MainScreen()),
     );
   }
 }

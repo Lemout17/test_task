@@ -1,103 +1,116 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:test_task/bloc/app/app_cubit.dart';
-import 'package:test_task/models/level_model.dart';
+import 'package:test_task/const/assets.dart';
+import 'package:test_task/screens/leaderboard_screen.dart';
+import 'package:test_task/screens/privacy_Screen.dart';
+import 'package:test_task/screens/profile_screen.dart';
+import 'package:test_task/screens/settings_screen.dart';
+import 'package:test_task/screens/terms_screen.dart';
 import 'package:test_task/utils/layout_wrapper.dart';
+import 'package:test_task/utils/size_config.dart';
+import 'package:test_task/widgets/common/button_wrapper.dart';
+import 'package:test_task/widgets/common/app_header.dart';
+import 'package:test_task/widgets/common/menu_container.dart';
+import 'package:test_task/widgets/common/stroke_text.dart';
 
-class MenuScreen extends StatefulWidget {
-  final bool isLoaded;
-
-  const MenuScreen({super.key, this.isLoaded = false});
-
-  @override
-  State<MenuScreen> createState() => _MenuScreenState();
-}
-
-class _MenuScreenState extends State<MenuScreen> {
-  // final AudioService audioService = AudioService();
-  late bool _isLoaded;
-  // late LifecycleEventHandler _lifecycleEventHandler;
-
-  @override
-  void initState() {
-    super.initState();
-    _isLoaded = widget.isLoaded;
-    // _lifecycleEventHandler = LifecycleEventHandler(
-    //   audioService: context.read<AudioService>(),
-    // );
-    // WidgetsBinding.instance.addObserver(_lifecycleEventHandler);
-    Future.delayed(const Duration(seconds: 2), () {
-      setState(() {
-        _isLoaded = true;
-      });
-    });
-  }
-
-  @override
-  void dispose() {
-    // WidgetsBinding.instance.removeObserver(_lifecycleEventHandler);
-    super.dispose();
-  }
-
-  void _selectLevel(LevelModel level) {
-    if (!level.isLock) {
-      // if (context.read<AppCubit>().state.isButtonsSound) {
-      //   audioService.playSound('buttons_sound');
-      // }
-      // Navigator.push(
-      //   context,
-      //   PageRouteBuilder(
-      //     pageBuilder: (context, animation1, animation2) =>
-      //         LevelScreen(level: level),
-      //     transitionDuration: Duration.zero,
-      //     reverseTransitionDuration: Duration.zero,
-      //   ),
-      // );
-    }
-  }
+class MenuScreen extends StatelessWidget {
+  const MenuScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    double screenHeight = MediaQuery.of(context).size.height;
-    return BlocBuilder<AppCubit, AppState>(
-      builder: (context, appState) {
-        return BackgroundWrapper(
-          child: Scaffold(
-            backgroundColor: Colors.transparent,
-            body: Column(
+    return BackgroundWrapper(
+      backgroundUrl: Assets.mainBg,
+      child: SafeArea(
+        child: Scaffold(
+          backgroundColor: Colors.transparent,
+          body: Padding(
+            padding: EdgeInsets.symmetric(horizontal: SizeConfig.w(7)),
+            child: Column(
               children: [
-                SizedBox(height: screenHeight * 0.08),
-                // const Center(child: AppLogo()),
-                // if (_isLoaded)
-                //   Expanded(
-                //     child: ListView.builder(
-                //       padding: const EdgeInsets.all(0),
-                //       itemCount: appState.levels.length,
-                //       itemBuilder: (context, index) {
-                //         return LevelSelectMenu(
-                //           backgroundUrl: appState.levels[index].previewUrl,
-                //           isRightPlay: index % 2 == 0,
-                //           isLock: appState.levels[index].isLock,
-                //           score: appState.levels[index].stars,
-                //           onTap: () => _selectLevel(appState.levels[index]),
-                //         );
-                //       },
-                //     ),
-                //   )
-                // else
-                //   Expanded(
-                //     child: Image.file(
-                //       ImagesService().getByFilename(
-                //         assetsMap['ball_decoration']!,
-                //       )!,
-                //       fit: BoxFit.contain,
-                //     ),
-                //   ),
+                SizedBox(height: SizeConfig.h(3)),
+                const AppHeader(),
+                SizedBox(height: SizeConfig.h(5)),
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: MenuContainer(
+                      child: Column(
+                        children: [
+                          SizedBox(height: SizeConfig.h(3)),
+                          Text(
+                            'menu',
+                            style: Theme.of(context).textTheme.headlineMedium,
+                          ),
+                          SizedBox(height: SizeConfig.h(3)),
+                          ButtonWrapper(
+                            onTap: () =>
+                                navigateTo(context, const ProfileScreen()),
+                            height: SizeConfig.h(10),
+                            child: StrokeText(
+                              'Profile',
+                              size: SizeConfig.font(3),
+                            ),
+                          ),
+                          SizedBox(height: SizeConfig.h(2)),
+                          ButtonWrapper(
+                            onTap: () =>
+                                navigateTo(context, const SettingsScreen()),
+                            height: SizeConfig.h(10),
+                            child: StrokeText(
+                              'settings',
+                              size: SizeConfig.font(3),
+                            ),
+                          ),
+                          SizedBox(height: SizeConfig.h(2)),
+                          ButtonWrapper(
+                            onTap: () =>
+                                navigateTo(context, const LeaderboardScreen()),
+                            height: SizeConfig.h(10),
+                            child: StrokeText(
+                              'leaderboard',
+                              size: SizeConfig.font(2.5),
+                            ),
+                          ),
+                          SizedBox(height: SizeConfig.h(2)),
+                          ButtonWrapper(
+                            onTap: () =>
+                                navigateTo(context, const PrivacyScreen()),
+                            height: SizeConfig.h(10),
+                            child: StrokeText(
+                              'privacy \npolicy',
+                              size: SizeConfig.font(3),
+                            ),
+                          ),
+                          SizedBox(height: SizeConfig.h(2)),
+                          ButtonWrapper(
+                            onTap: () =>
+                                navigateTo(context, const TermsScreen()),
+                            height: SizeConfig.h(10),
+                            child: StrokeText(
+                              'term\nof use',
+                              size: SizeConfig.font(3),
+                            ),
+                          ),
+                          SizedBox(height: SizeConfig.h(2)),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
-        );
-      },
+        ),
+      ),
+    );
+  }
+
+  void navigateTo(BuildContext context, Widget screen) {
+    Navigator.pushReplacement(
+      context,
+      PageRouteBuilder<Widget>(
+        pageBuilder: (context, animation1, animation2) => screen,
+        transitionDuration: Duration.zero,
+        reverseTransitionDuration: Duration.zero,
+      ),
     );
   }
 }

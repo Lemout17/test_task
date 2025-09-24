@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:test_task/theme/app_branding_colors.dart';
 import 'package:test_task/theme/app_colors.dart';
+import 'package:test_task/utils/size_config.dart';
 
 class AppTheme {
-  static const String fontFamily = "Nunito";
+  static const String fontFamily = 'RubikMonoOne';
 
   static ThemeData get lightTheme {
     return ThemeData(
+      fontFamily: fontFamily,
       visualDensity: VisualDensity.adaptivePlatformDensity,
       scaffoldBackgroundColor: AppColors.white,
       colorScheme: ColorScheme.fromSeed(seedColor: AppColors.cornflowerBlue),
@@ -14,41 +16,61 @@ class AppTheme {
       appBarTheme: const AppBarTheme(backgroundColor: AppColors.white),
       iconTheme: const IconThemeData(color: AppColors.black),
       dividerColor: AppColors.silver.withOpacity(0.2),
-      bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-        backgroundColor: AppColors.white,
-        selectedItemColor: AppColors.cornflowerBlue,
-        unselectedItemColor: AppColors.black,
-        selectedIconTheme: IconThemeData(color: AppColors.cornflowerBlue),
-        selectedLabelStyle: TextStyle(color: AppColors.cornflowerBlue),
-        unselectedIconTheme: IconThemeData(color: AppColors.black),
-        unselectedLabelStyle: TextStyle(color: AppColors.black),
-      ),
-      inputDecorationTheme: const InputDecorationTheme(
-        labelStyle: TextStyle(color: AppColors.silver),
-        fillColor: Colors.transparent,
-        filled: true,
-        focusedBorder: UnderlineInputBorder(
-          borderSide: BorderSide(color: AppColors.cornflowerBlue),
+      // bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+      //   backgroundColor: AppColors.white,
+      //   selectedItemColor: AppColors.cornflowerBlue,
+      //   unselectedItemColor: AppColors.black,
+      //   selectedIconTheme: IconThemeData(color: AppColors.cornflowerBlue),
+      //   selectedLabelStyle: TextStyle(color: AppColors.cornflowerBlue),
+      //   unselectedIconTheme: IconThemeData(color: AppColors.black),
+      //   unselectedLabelStyle: TextStyle(color: AppColors.black),
+      // ),
+      inputDecorationTheme: InputDecorationTheme(
+        fillColor: AppColors.pink,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide(color: Colors.transparent),
         ),
-        enabledBorder: UnderlineInputBorder(
-          borderSide: BorderSide(color: AppColors.silver),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide(color: Colors.transparent),
         ),
-      ),
-      textTheme: const TextTheme(
-        headlineSmall: TextStyle(
-          fontSize: 14,
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide(color: Colors.transparent, width: 2),
+        ),
+        disabledBorder: InputBorder.none,
+        errorBorder: InputBorder.none,
+        focusedErrorBorder: InputBorder.none,
+        hintStyle: TextStyle(
+          fontSize: SizeConfig.font(2),
           color: AppColors.white,
           fontFamily: fontFamily,
+          fontWeight: FontWeight.w400,
+          decoration: TextDecoration.none,
+          decorationThickness: 0,
+        ),
+        contentPadding: EdgeInsets.symmetric(
+          horizontal: SizeConfig.w(4),
+          vertical: SizeConfig.h(2),
+        ),
+      ),
+      textTheme: TextTheme(
+        headlineSmall: TextStyle(
+          fontSize: SizeConfig.font(2),
+          color: AppColors.white,
+          fontFamily: fontFamily,
+          fontWeight: FontWeight.w400,
         ),
         headlineMedium: TextStyle(
-          fontSize: 20,
+          fontSize: SizeConfig.font(4.5),
           color: AppColors.white,
           fontFamily: fontFamily,
-          fontWeight: FontWeight.w800,
+          fontWeight: FontWeight.w400,
         ),
         headlineLarge: TextStyle(
-          fontSize: 30,
-          fontWeight: FontWeight.w800,
+          fontSize: SizeConfig.font(10),
+          fontWeight: FontWeight.w400,
           color: AppColors.white,
           fontFamily: fontFamily,
         ),
@@ -59,7 +81,7 @@ class AppTheme {
           backgroundColor: AppColors.cornflowerBlue,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(100),
-            side: const BorderSide(color: AppColors.white, width: 1),
+            side: const BorderSide(color: AppColors.white),
           ),
         ),
       ),
@@ -80,24 +102,21 @@ class AppTheme {
       appBarTheme: const AppBarTheme(backgroundColor: AppColors.silver),
       iconTheme: const IconThemeData(color: AppColors.white),
       dividerColor: AppColors.silver.withOpacity(0.2),
-      bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-        backgroundColor: AppColors.silver,
-        selectedItemColor: AppColors.cornflowerBlue,
-        unselectedItemColor: AppColors.white,
-        unselectedIconTheme: IconThemeData(color: AppColors.white),
-        unselectedLabelStyle: TextStyle(color: AppColors.white),
-      ),
-      inputDecorationTheme: const InputDecorationTheme(
-        labelStyle: TextStyle(color: AppColors.silver),
-        fillColor: Colors.transparent,
-        filled: true,
-        focusedBorder: UnderlineInputBorder(
-          borderSide: BorderSide(color: AppColors.cornflowerBlue),
-        ),
-        enabledBorder: UnderlineInputBorder(
-          borderSide: BorderSide(color: AppColors.silver),
-        ),
-      ),
+      // bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+      //   backgroundColor: AppColors.silver,
+      //   selectedItemColor: AppColors.cornflowerBlue,
+      //   unselectedItemColor: AppColors.white,
+      //   unselectedIconTheme: IconThemeData(color: AppColors.white),
+      //   unselectedLabelStyle: TextStyle(color: AppColors.white),
+      // ),
+      // inputDecorationTheme: const InputDecorationTheme(
+      //   border: InputBorder.none,
+      //   focusedBorder: InputBorder.none,
+      //   enabledBorder: InputBorder.none,
+      //   disabledBorder: InputBorder.none,
+      //   errorBorder: InputBorder.none,
+      //   focusedErrorBorder: InputBorder.none,
+      // ),
       textTheme: const TextTheme(
         headlineSmall: TextStyle(fontSize: 14, color: AppColors.white),
         headlineMedium: TextStyle(fontSize: 16, color: AppColors.white),
@@ -113,7 +132,7 @@ class AppTheme {
           backgroundColor: AppColors.cornflowerBlue,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(100),
-            side: const BorderSide(color: AppColors.white, width: 1),
+            side: const BorderSide(color: AppColors.white),
           ),
         ),
       ),
