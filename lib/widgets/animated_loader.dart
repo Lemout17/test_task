@@ -8,7 +8,7 @@ class AnimatedGradientLoader extends StatefulWidget {
     super.key,
     this.duration = const Duration(seconds: 3),
     this.height = 117.0,
-    this.borderRadiusOutter = 16.0,
+    this.borderRadiusOuter = 16.0,
     this.borderRadiusInner = 12.0,
     this.gradient,
     this.borderGradient,
@@ -19,7 +19,7 @@ class AnimatedGradientLoader extends StatefulWidget {
 
   final Duration duration;
   final double height;
-  final double borderRadiusOutter;
+  final double borderRadiusOuter;
   final double borderRadiusInner;
   final Gradient? gradient;
   final Gradient? borderGradient;
@@ -87,7 +87,7 @@ class _AnimatedGradientLoaderState extends State<AnimatedGradientLoader>
             return Container(
               decoration: BoxDecoration(
                 gradient: widget.borderGradient ?? defaultBorderGradient,
-                borderRadius: BorderRadius.circular(widget.borderRadiusOutter),
+                borderRadius: BorderRadius.circular(widget.borderRadiusOuter),
               ),
               padding: EdgeInsets.all(widget.borderWidth),
               child: SizedBox(

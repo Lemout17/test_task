@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:test_task/const/assets.dart';
-import 'package:test_task/screens/leaderboard_screen.dart';
-import 'package:test_task/screens/privacy_Screen.dart';
-import 'package:test_task/screens/profile_screen.dart';
-import 'package:test_task/screens/settings_screen.dart';
-import 'package:test_task/screens/terms_screen.dart';
+import 'package:test_task/navigation/routes.dart';
 import 'package:test_task/utils/layout_wrapper.dart';
 import 'package:test_task/utils/size_config.dart';
 import 'package:test_task/widgets/common/button_wrapper.dart';
@@ -34,15 +31,14 @@ class MenuScreen extends StatelessWidget {
                     child: MenuContainer(
                       child: Column(
                         children: [
-                          SizedBox(height: SizeConfig.h(3)),
+                          SizedBox(height: SizeConfig.h(2)),
                           Text(
                             'menu',
                             style: Theme.of(context).textTheme.headlineMedium,
                           ),
                           SizedBox(height: SizeConfig.h(3)),
                           ButtonWrapper(
-                            onTap: () =>
-                                navigateTo(context, const ProfileScreen()),
+                            onTap: () => context.goNamed(AppRouteNames.profile),
                             height: SizeConfig.h(10),
                             child: StrokeText(
                               'Profile',
@@ -52,7 +48,7 @@ class MenuScreen extends StatelessWidget {
                           SizedBox(height: SizeConfig.h(2)),
                           ButtonWrapper(
                             onTap: () =>
-                                navigateTo(context, const SettingsScreen()),
+                                context.goNamed(AppRouteNames.settings),
                             height: SizeConfig.h(10),
                             child: StrokeText(
                               'settings',
@@ -62,7 +58,7 @@ class MenuScreen extends StatelessWidget {
                           SizedBox(height: SizeConfig.h(2)),
                           ButtonWrapper(
                             onTap: () =>
-                                navigateTo(context, const LeaderboardScreen()),
+                                context.goNamed(AppRouteNames.leaderboard),
                             height: SizeConfig.h(10),
                             child: StrokeText(
                               'leaderboard',
@@ -71,8 +67,7 @@ class MenuScreen extends StatelessWidget {
                           ),
                           SizedBox(height: SizeConfig.h(2)),
                           ButtonWrapper(
-                            onTap: () =>
-                                navigateTo(context, const PrivacyScreen()),
+                            onTap: () => context.goNamed(AppRouteNames.privacy),
                             height: SizeConfig.h(10),
                             child: StrokeText(
                               'privacy \npolicy',
@@ -81,8 +76,7 @@ class MenuScreen extends StatelessWidget {
                           ),
                           SizedBox(height: SizeConfig.h(2)),
                           ButtonWrapper(
-                            onTap: () =>
-                                navigateTo(context, const TermsScreen()),
+                            onTap: () => context.goNamed(AppRouteNames.terms),
                             height: SizeConfig.h(10),
                             child: StrokeText(
                               'term\nof use',
@@ -99,17 +93,6 @@ class MenuScreen extends StatelessWidget {
             ),
           ),
         ),
-      ),
-    );
-  }
-
-  void navigateTo(BuildContext context, Widget screen) {
-    Navigator.pushReplacement(
-      context,
-      PageRouteBuilder<Widget>(
-        pageBuilder: (context, animation1, animation2) => screen,
-        transitionDuration: Duration.zero,
-        reverseTransitionDuration: Duration.zero,
       ),
     );
   }

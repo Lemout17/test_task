@@ -29,6 +29,7 @@ class LevelSelectScreen extends StatelessWidget {
                 ),
                 SizedBox(height: SizeConfig.h(8)),
                 GridView.builder(
+                  physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 3,

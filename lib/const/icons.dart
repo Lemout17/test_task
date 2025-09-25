@@ -4,4 +4,5 @@ class AppIcons {
   static const String back = 'assets/icons/back.svg';
   static const String edit = 'assets/icons/edit.svg';
   static const String inputIcon = 'assets/icons/input_icon.svg';
+  static const String coin = 'assets/icons/coin.svg';
 }

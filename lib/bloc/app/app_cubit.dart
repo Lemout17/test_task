@@ -1,111 +1,126 @@
+import 'dart:convert';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:test_task/const/levels.dart';
-import 'package:test_task/models/level_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:test_task/models/shop_item_model.dart';
+import 'package:test_task/models/user_model.dart';
+import 'package:test_task/models/user_settings_model.dart';
 
 part 'app_state.dart';
 
 class AppCubit extends Cubit<AppState> {
-  AppCubit() : super(AppState(levels: Levels.levels));
+  static const _userKey = 'user_data';
+  static const _settingsKey = 'user_settings';
+  static late SharedPreferences _prefs;
 
-  // void saveLevels() async {
-  //   var box = await Hive.openBox('box');
-  //   List<Map<String, dynamic>> levelsJson = state.levels
-  //       .map((level) => level.toJson())
-  //       .toList();
+  AppCubit({required UserModel user, required UserSettingsModel userSettings})
+    : super(AppState(user: user, userSettings: userSettings));
 
-  //   await box.put('levels', levelsJson);
-  //   await box.close();
-  // }
-
-  Future<void> loadLevels() async {
-    // var box = await Hive.openBox('box');
-    // var levelsJson = await box.get('levels');
-
-    // if (levelsJson != null) {
-    //   List<LevelModel> loadedLevels = [];
-    //   for (int i = 0; i < levelsJson.length; i++) {
-    //     Map<String, dynamic> castedLevelMap = Map<String, dynamic>.from(
-    //       levelsJson[i],
-    //     );
-    //     bool isLock = i == 0 ? false : castedLevelMap['isLock'] ?? true;
-    //     loadedLevels.add(LevelModel.fromJson(castedLevelMap, isLock: isLock));
-    //   }
-
-    //   emit(state.copyWith(levels: loadedLevels));
-    // }
-    // await box.close();
+  static Future<void> init() async {
+    _prefs = await SharedPreferences.getInstance();
   }
 
-  void finishLevel(LevelModel level, int stars) {
-    // List<LevelModel> updatedLevels = List.from(state.levels);
+  static Future<AppCubit> load() async {
+    await init();
 
-    // int currentIndex = updatedLevels.indexWhere((l) => l == level);
+    final userJson = _prefs.getString(_userKey);
+    final user = userJson != null
+        ? UserModel.fromJson(jsonDecode(userJson))
+        : UserModel();
 
-    // if (currentIndex != -1) {
-    //   updatedLevels[currentIndex] = updatedLevels[currentIndex].copyWith(
-    //     stars: stars,
-    //   );
+    final settingsJson = _prefs.getString(_settingsKey);
+    final settings = settingsJson != null
+        ? UserSettingsModel.fromJson(jsonDecode(settingsJson))
+        : UserSettingsModel();
 
-    //   if (stars > 0 && currentIndex < updatedLevels.length - 1) {
-    //     updatedLevels[currentIndex + 1] = updatedLevels[currentIndex + 1]
-    //         .copyWith(isLock: false);
-    //   }
-    // }
-
-    // // saveLevels();
-    // emit(state.copyWith(levels: updatedLevels));
+    return AppCubit(user: user, userSettings: settings);
   }
 
-  void addScore(int points) {
-    emit(
-      state.copyWith(
-        levels: state.levels,
-        score: state.score + points,
-        balls: state.balls,
-      ),
+  Future<void> updateUser({
+    String? username,
+    String? email,
+    String? avatar,
+  }) async {
+    final updatedUser = state.user.copyWith(
+      username: username,
+      email: email,
+      avatar: avatar,
     );
+    emit(state.copyWith(user: updatedUser, userSettings: state.userSettings));
+    await _prefs.setString(_userKey, jsonEncode(updatedUser.toJson()));
   }
 
-  void useBall() {
-    if (state.balls > 0) {
-      emit(
-        state.copyWith(
-          levels: state.levels,
-          score: state.score,
-          balls: state.balls - 1,
-        ),
-      );
+  Future<void> updateSettings({
+    bool? isSoundOn,
+    bool? isMusicOn,
+    bool? isNotificationOn,
+    bool? isVibrationOn,
+    int? coins,
+    String? bg,
+    String? egg,
+    int? currentLevel,
+    List<UnlockedContent>? unlockedContents,
+  }) async {
+    final updatedSettings = state.userSettings.copyWith(
+      isSoundOn: isSoundOn,
+      isMusicOn: isMusicOn,
+      isNotificationOn: isNotificationOn,
+      isVibrationOn: isVibrationOn,
+      coins: coins,
+      bg: bg,
+      egg: egg,
+      currentLevel: currentLevel,
+      unlockedContents: unlockedContents,
+    );
+    emit(state.copyWith(user: state.user, userSettings: updatedSettings));
+    await _prefs.setString(_settingsKey, jsonEncode(updatedSettings.toJson()));
+  }
+
+  bool buyOrEquipItem(ShopItemModel item) {
+    final coins = state.userSettings.coins;
+    final unlocked = state.userSettings.unlockedContents;
+    final isUnlocked = unlocked.contains(item.content);
+    final isBackground = item.name.contains('Background');
+
+    if (!isUnlocked && coins < item.price) {
+      return false;
     }
+
+    if (!isUnlocked) {
+      final newUnlocked = [...unlocked, item.content];
+      if (isBackground) {
+        updateSettings(
+          coins: coins - item.price,
+          unlockedContents: newUnlocked,
+          bg: item.content.name,
+        );
+      } else {
+        updateSettings(
+          coins: coins - item.price,
+          unlockedContents: newUnlocked,
+          egg: item.content.name,
+        );
+      }
+    } else {
+      if (isBackground) {
+        updateSettings(bg: item.content.name);
+      } else {
+        updateSettings(egg: item.content.name);
+      }
+    }
+
+    return true;
   }
 
-  void resetGame() {
-    emit(
-      state.copyWith(
-        levels: state.levels,
-        balls: 10,
-        score: 0,
-        isButtonsSound: state.isButtonsSound,
-        isBackgroundSound: state.isBackgroundSound,
-      ),
-    );
+  Future<void> resetSettings() async {
+    final defaultSettings = UserSettingsModel();
+    emit(state.copyWith(user: state.user, userSettings: defaultSettings));
+    await _prefs.remove(_settingsKey);
   }
 
-  void updateBackgroundSound() {
-    emit(
-      state.copyWith(
-        levels: state.levels,
-        isBackgroundSound: !state.isBackgroundSound,
-      ),
-    );
-  }
-
-  void updateButtonsSound() {
-    emit(
-      state.copyWith(
-        levels: state.levels,
-        isButtonsSound: !state.isButtonsSound,
-      ),
-    );
+  Future<void> clearUser() async {
+    final defaultUser = UserModel();
+    emit(state.copyWith(user: defaultUser, userSettings: state.userSettings));
+    await _prefs.remove(_userKey);
   }
 }

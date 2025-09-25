@@ -16,15 +16,6 @@ class AppTheme {
       appBarTheme: const AppBarTheme(backgroundColor: AppColors.white),
       iconTheme: const IconThemeData(color: AppColors.black),
       dividerColor: AppColors.silver.withOpacity(0.2),
-      // bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-      //   backgroundColor: AppColors.white,
-      //   selectedItemColor: AppColors.cornflowerBlue,
-      //   unselectedItemColor: AppColors.black,
-      //   selectedIconTheme: IconThemeData(color: AppColors.cornflowerBlue),
-      //   selectedLabelStyle: TextStyle(color: AppColors.cornflowerBlue),
-      //   unselectedIconTheme: IconThemeData(color: AppColors.black),
-      //   unselectedLabelStyle: TextStyle(color: AppColors.black),
-      // ),
       inputDecorationTheme: InputDecorationTheme(
         fillColor: AppColors.pink,
         border: OutlineInputBorder(
@@ -73,6 +64,12 @@ class AppTheme {
           fontWeight: FontWeight.w400,
           color: AppColors.white,
           fontFamily: fontFamily,
+        ),
+        bodySmall: TextStyle(
+          fontSize: SizeConfig.font(2.5),
+          color: AppColors.white,
+          fontFamily: fontFamily,
+          fontWeight: FontWeight.w400,
         ),
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(

@@ -1,42 +1,18 @@
 part of 'app_cubit.dart';
 
 class AppState extends Equatable {
-  final List<LevelModel> levels;
-  final int score;
-  final int balls;
-  final bool isBackgroundSound;
-  final bool isButtonsSound;
+  const AppState({required this.user, required this.userSettings});
 
-  const AppState({
-    required this.levels,
-    this.score = 0,
-    this.balls = 10,
-    this.isBackgroundSound = true,
-    this.isButtonsSound = true,
-  });
+  final UserSettingsModel userSettings;
+  final UserModel user;
 
   @override
-  List<Object?> get props => [
-    levels,
-    score,
-    balls,
-    isBackgroundSound,
-    isButtonsSound,
-  ];
+  List<Object?> get props => [userSettings, user];
 
   AppState copyWith({
-    required List<LevelModel> levels,
-    int? score,
-    int? balls,
-    bool? isBackgroundSound,
-    bool? isButtonsSound,
+    required UserSettingsModel userSettings,
+    required UserModel user,
   }) {
-    return AppState(
-      levels: levels, // can't be null
-      score: score ?? this.score,
-      balls: balls ?? this.balls,
-      isBackgroundSound: isBackgroundSound ?? this.isBackgroundSound,
-      isButtonsSound: isButtonsSound ?? this.isButtonsSound,
-    );
+    return AppState(user: user, userSettings: userSettings);
   }
 }
