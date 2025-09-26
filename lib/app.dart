@@ -7,10 +7,24 @@ import 'package:test_task/utils/size_config.dart';
 import 'package:test_task/utils/theme_notifier.dart';
 
 class App extends StatelessWidget {
-  const App({super.key});
+  App({super.key});
 
   Future<AppCubit> _initCubit() async {
     return await AppCubit.load();
+  }
+
+  final List<String> _backgrounds = [
+    'assets/images/loading_bg.jpg',
+    'assets/images/main_bg.jpg',
+    'assets/images/menu_bg.jpg',
+    'assets/images/game_bg1.jpg',
+    'assets/images/game_bg2.jpg',
+  ];
+
+  Future<void> _precacheBackgrounds(BuildContext context) async {
+    for (var bg in _backgrounds) {
+      await precacheImage(AssetImage(bg), context);
+    }
   }
 
   @override
@@ -33,6 +47,11 @@ class App extends StatelessWidget {
             child: Builder(
               builder: (context) {
                 SizeConfig.init(context);
+
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  _precacheBackgrounds(context);
+                });
+
                 final themeNotifier = context.watch<ThemeNotifier>();
 
                 return MaterialApp.router(

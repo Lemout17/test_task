@@ -26,6 +26,7 @@ class _MainScreenState extends State<MainScreen> {
     return BlocBuilder<AppCubit, AppState>(
       builder: (context, appState) {
         return BackgroundWrapper(
+          withGlow: true,
           backgroundUrl: Assets.menuBg,
           child: SafeArea(
             child: Scaffold(
