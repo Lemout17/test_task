@@ -6,18 +6,20 @@ import 'package:test_task/utils/size_config.dart';
 class LevelButtonWrapper extends StatelessWidget {
   final LevelModel level;
   final bool isLevelAvailable;
+  final VoidCallback? onTap;
 
   const LevelButtonWrapper({
     super.key,
     required this.level,
     required this.isLevelAvailable,
+    this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
-      onTap: isLevelAvailable ? () => onTapSelectLevel(context) : null,
+      onTap: onTap,
       child: Container(
         height: SizeConfig.h(10),
         width: SizeConfig.h(10),
@@ -37,17 +39,5 @@ class LevelButtonWrapper extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  void onTapSelectLevel(BuildContext context) {
-    // Navigator.push(
-    //   context,
-    //   PageRouteBuilder<Widget>(
-    //     pageBuilder: (context, animation1, animation2) =>
-    //         GameScreen(level: level),
-    //     transitionDuration: Duration.zero,
-    //     reverseTransitionDuration: Duration.zero,
-    //   ),
-    // );
   }
 }

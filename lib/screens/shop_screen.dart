@@ -20,87 +20,79 @@ class ShopScreen extends StatelessWidget {
       child: SafeArea(
         child: Scaffold(
           backgroundColor: Colors.transparent,
-          body: Padding(
+          body: SingleChildScrollView(
             padding: EdgeInsets.symmetric(horizontal: SizeConfig.w(7)),
             child: Column(
               children: [
                 SizedBox(height: SizeConfig.h(3)),
                 const AppHeader(withCoin: true),
                 SizedBox(height: SizeConfig.h(3)),
-                Expanded(
-                  child: BlocBuilder<AppCubit, AppState>(
-                    builder: (context, state) {
-                      final unlocked = state.userSettings.unlockedContents;
-                      final bg = state.userSettings.bg;
-                      final egg = state.userSettings.egg;
+                BlocBuilder<AppCubit, AppState>(
+                  builder: (context, state) {
+                    final unlocked = state.userSettings.unlockedContents;
+                    final bg = state.userSettings.bg;
+                    final egg = state.userSettings.egg;
 
-                      return MenuContainer(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            GestureDetector(
-                              onTap: () =>
-                                  context.read<AppCubit>().resetSettings(),
-                              child: Text(
-                                'Shop',
-                                style: Theme.of(
-                                  context,
-                                ).textTheme.headlineMedium,
-                              ),
+                    return MenuContainer(
+                      child: Column(
+                        children: [
+                          GestureDetector(
+                            onTap: () =>
+                                context.read<AppCubit>().resetSettings(),
+                            child: Text(
+                              'Shop',
+                              style: Theme.of(context).textTheme.headlineMedium,
                             ),
-                            SizedBox(height: SizeConfig.h(5)),
-                            Expanded(
-                              child: GridView.builder(
-                                gridDelegate:
-                                    const SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 2,
-                                      crossAxisSpacing: 30,
-                                      mainAxisSpacing: 30,
-                                    ),
-                                itemCount: shopItemsList.length,
-                                itemBuilder: (context, index) {
-                                  final item = shopItemsList[index];
-                                  final isUnlocked = unlocked.contains(
-                                    item.content,
-                                  );
-                                  final isBackground = item.name.contains(
-                                    'Background',
-                                  );
-                                  final isUsed =
-                                      (isBackground ? bg : egg) ==
-                                      item.content.name;
+                          ),
+                          SizedBox(height: SizeConfig.h(5)),
+                          GridView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2,
+                                  crossAxisSpacing: 30,
+                                  mainAxisSpacing: 30,
+                                ),
+                            itemCount: shopItemsList.length,
+                            itemBuilder: (context, index) {
+                              final item = shopItemsList[index];
+                              final isUnlocked = unlocked.contains(
+                                item.content,
+                              );
+                              final isBackground = item.name.contains(
+                                'Background',
+                              );
+                              final isUsed =
+                                  (isBackground ? bg : egg) ==
+                                  item.content.name;
 
-                                  return ShopItem(
-                                    item: item,
-                                    isUnlockedContent: isUnlocked,
-                                    isUsed: isUsed,
-                                    onTap: () {
-                                      final cubit = context.read<AppCubit>();
-                                      final success = cubit.buyOrEquipItem(
-                                        item,
-                                      );
+                              return ShopItem(
+                                item: item,
+                                isUnlockedContent: isUnlocked,
+                                isUsed: isUsed,
+                                onTap: () {
+                                  final cubit = context.read<AppCubit>();
+                                  final success = cubit.buyOrEquipItem(item);
 
-                                      if (!success) {
-                                        ScaffoldMessenger.of(
-                                          context,
-                                        ).showSnackBar(
-                                          const SnackBar(
-                                            content: Text('Not enough coins'),
-                                            backgroundColor: AppColors.red,
-                                          ),
-                                        );
-                                      }
-                                    },
-                                  );
+                                  if (!success) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text('Not enough coins'),
+                                        backgroundColor: AppColors.red,
+                                      ),
+                                    );
+                                  }
                                 },
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                  ),
+                              );
+                            },
+                          ),
+                        ],
+                      ),
+                    );
+                  },
                 ),
+                SizedBox(height: SizeConfig.h(3)),
               ],
             ),
           ),

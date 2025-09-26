@@ -32,15 +32,11 @@ class ShopItem extends StatelessWidget {
             image: AssetImage(Assets.buttonWrapper),
             fit: BoxFit.contain,
           ),
-          boxShadow: [
-            isUsed
-                ? BoxShadow(
-                    color: AppColors.green,
-                    offset: const Offset(0, 0),
-                    blurRadius: 20,
-                  )
-                : BoxShadow(color: Colors.transparent),
-          ],
+          borderRadius: BorderRadius.circular(SizeConfig.w(5)),
+          border: Border.all(
+            color: isUsed ? AppColors.green : Colors.transparent,
+            width: 2,
+          ),
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

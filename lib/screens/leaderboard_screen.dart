@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:test_task/bloc/app/app_cubit.dart';
 import 'package:test_task/const/assets.dart';
-import 'package:test_task/theme/app_colors.dart';
+import 'package:test_task/resources/players_list.dart';
 import 'package:test_task/utils/layout_wrapper.dart';
 import 'package:test_task/utils/size_config.dart';
 import 'package:test_task/widgets/common/app_header.dart';
 import 'package:test_task/widgets/common/menu_container.dart';
+import 'package:test_task/widgets/player_tile.dart';
 
 class LeaderboardScreen extends StatelessWidget {
   const LeaderboardScreen({super.key});
@@ -26,59 +29,41 @@ class LeaderboardScreen extends StatelessWidget {
                 Expanded(
                   child: MenuContainer(
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           'leaderboard',
                           style: Theme.of(context).textTheme.headlineMedium,
                         ),
-                        ListView.builder(
-                          itemBuilder: (context, index) => Stack(
-                            alignment: Alignment.centerLeft,
-                            clipBehavior: Clip.none,
-                            children: [
-                              Container(
-                                margin: EdgeInsets.only(
-                                  left: SizeConfig.w(0.5),
-                                ),
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: SizeConfig.w(5),
-                                  vertical: SizeConfig.h(1.8),
-                                ),
-                                decoration: BoxDecoration(
-                                  color: AppColors.pink,
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(SizeConfig.w(3)),
-                                  ),
-                                ),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    SizedBox(),
-                                    Text(
-                                      'Username',
-                                      style: Theme.of(
-                                        context,
-                                      ).textTheme.headlineSmall,
+                        SizedBox(height: SizeConfig.h(2)),
+                        BlocBuilder<AppCubit, AppState>(
+                          builder: (context, state) {
+                            final currentPlayer = state.user;
+                            final sortedPlayers = [
+                              ...playersList,
+                              currentPlayer,
+                            ]..sort((a, b) => b.score.compareTo(a.score));
+
+                            return Expanded(
+                              child: ListView.builder(
+                                itemCount: sortedPlayers.length,
+                                itemBuilder: (context, index) {
+                                  final player = sortedPlayers[index];
+
+                                  return Padding(
+                                    padding: EdgeInsets.only(
+                                      bottom: SizeConfig.h(1),
                                     ),
-                                    Text(
-                                      '0000',
-                                      style: Theme.of(
-                                        context,
-                                      ).textTheme.headlineSmall,
+                                    child: PlayerTile(
+                                      player: player,
+                                      isCurrent:
+                                          player.email == currentPlayer.email,
                                     ),
-                                  ],
-                                ),
+                                  );
+                                },
                               ),
-                              Image.asset(
-                                Assets.buttonWrapper,
-                                height: SizeConfig.h(7),
-                              ),
-                            ],
-                          ),
-                          shrinkWrap: true,
-                          itemCount: 9,
+                            );
+                          },
                         ),
                       ],
                     ),

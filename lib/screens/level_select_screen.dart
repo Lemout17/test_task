@@ -43,6 +43,7 @@ class LevelSelectScreen extends StatelessWidget {
                     return LevelButtonWrapper(
                       level: level,
                       isLevelAvailable: true,
+                      onTap: () {},
                     );
                   },
                 ),

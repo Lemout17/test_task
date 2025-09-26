@@ -10,8 +10,28 @@ import 'package:test_task/widgets/common/button_wrapper.dart';
 import 'package:test_task/widgets/common/menu_container.dart';
 import 'package:test_task/widgets/common/stroke_text.dart';
 
-class SettingsScreen extends StatelessWidget {
+class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
+
+  @override
+  State<SettingsScreen> createState() => _SettingsScreenState();
+}
+
+class _SettingsScreenState extends State<SettingsScreen> {
+  late bool _music;
+  late bool _sound;
+  late bool _notification;
+  late bool _vibration;
+
+  @override
+  void initState() {
+    super.initState();
+    final settings = context.read<AppCubit>().state.userSettings;
+    _music = settings.isMusicOn;
+    _sound = settings.isSoundOn;
+    _notification = settings.isNotificationOn;
+    _vibration = settings.isVibrationOn;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,76 +50,53 @@ class SettingsScreen extends StatelessWidget {
                 Flexible(
                   flex: 3,
                   child: MenuContainer(
-                    child: BlocBuilder<AppCubit, AppState>(
-                      builder: (context, state) {
-                        final settings = state.userSettings;
-
-                        return Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(
-                              'Settings',
-                              style: Theme.of(context).textTheme.headlineMedium,
-                            ),
-                            SizedBox(height: SizeConfig.h(2)),
-                            _buildSwitchRow(
-                              context: context,
-                              title: 'music',
-                              value: settings.isMusicOn,
-                              onChanged: (val) {
-                                context.read<AppCubit>().updateSettings(
-                                  isMusicOn: val,
-                                );
-                              },
-                            ),
-                            _buildSwitchRow(
-                              context: context,
-                              title: 'sound',
-                              value: settings.isSoundOn,
-                              onChanged: (val) {
-                                context.read<AppCubit>().updateSettings(
-                                  isSoundOn: val,
-                                );
-                              },
-                            ),
-                            _buildSwitchRow(
-                              context: context,
-                              title: 'notification',
-                              value: settings.isNotificationOn,
-                              onChanged: (val) {
-                                context.read<AppCubit>().updateSettings(
-                                  isNotificationOn: val,
-                                );
-                              },
-                            ),
-                            _buildSwitchRow(
-                              context: context,
-                              title: 'vibration',
-                              value: settings.isVibrationOn,
-                              onChanged: (val) {
-                                context.read<AppCubit>().updateSettings(
-                                  isVibrationOn: val,
-                                );
-                              },
-                            ),
-                          ],
-                        );
-                      },
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          'Settings',
+                          style: Theme.of(context).textTheme.headlineMedium,
+                        ),
+                        SizedBox(height: SizeConfig.h(2)),
+                        _buildSwitchRow(
+                          context: context,
+                          title: 'music',
+                          value: _music,
+                          onChanged: (val) => setState(() => _music = val),
+                        ),
+                        _buildSwitchRow(
+                          context: context,
+                          title: 'sound',
+                          value: _sound,
+                          onChanged: (val) => setState(() => _sound = val),
+                        ),
+                        _buildSwitchRow(
+                          context: context,
+                          title: 'notification',
+                          value: _notification,
+                          onChanged: (val) =>
+                              setState(() => _notification = val),
+                        ),
+                        _buildSwitchRow(
+                          context: context,
+                          title: 'vibration',
+                          value: _vibration,
+                          onChanged: (val) => setState(() => _vibration = val),
+                        ),
+                      ],
                     ),
                   ),
                 ),
                 const Spacer(flex: 1),
                 ButtonWrapper(
                   onTap: () {
-                    final state = context.read<AppCubit>().state;
-                    debugPrint('music: ${state.userSettings.isMusicOn}');
-                    debugPrint('sound: ${state.userSettings.isSoundOn}');
-                    debugPrint(
-                      'notification: ${state.userSettings.isNotificationOn}',
+                    context.read<AppCubit>().updateSettings(
+                      isMusicOn: _music,
+                      isSoundOn: _sound,
+                      isNotificationOn: _notification,
+                      isVibrationOn: _vibration,
                     );
-                    debugPrint(
-                      'vibration: ${state.userSettings.isVibrationOn}',
-                    );
+                    debugPrint('Settings saved');
                   },
                   height: SizeConfig.h(15),
                   child: StrokeText('save', size: SizeConfig.font(8)),

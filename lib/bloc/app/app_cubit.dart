@@ -40,11 +40,13 @@ class AppCubit extends Cubit<AppState> {
     String? username,
     String? email,
     String? avatar,
+    int? score,
   }) async {
     final updatedUser = state.user.copyWith(
       username: username,
       email: email,
       avatar: avatar,
+      score: score,
     );
     emit(state.copyWith(user: updatedUser, userSettings: state.userSettings));
     await _prefs.setString(_userKey, jsonEncode(updatedUser.toJson()));
