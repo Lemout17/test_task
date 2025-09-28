@@ -31,7 +31,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
                 height: SizeConfig.h(5.5),
                 borderRadiusOuter: 16,
                 borderRadiusInner: 16,
-                onCompleted: navigateToMenu,
+                onCompleted: () => context.goNamed(AppRouteNames.main),
               ),
             ),
             SizedBox(height: SizeConfig.h(5)),
@@ -39,9 +39,5 @@ class _LoadingScreenState extends State<LoadingScreen> {
         ),
       ),
     );
-  }
-
-  void navigateToMenu() {
-    context.goNamed(AppRouteNames.main);
   }
 }

@@ -77,7 +77,6 @@ class _BackgroundWrapperState extends State<BackgroundWrapper>
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        // Плавное появление картинки через AnimatedOpacity
         if (widget.backgroundUrl != null)
           AnimatedOpacity(
             opacity: _isImageLoaded ? 1.0 : 0.0,
@@ -90,8 +89,7 @@ class _BackgroundWrapperState extends State<BackgroundWrapper>
             ),
           )
         else
-          Container(color: Colors.white), // если картинки нет
-
+          Container(color: Colors.white),
         if (widget.withGlow)
           Positioned.fill(
             child: AnimatedBuilder(

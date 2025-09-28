@@ -61,7 +61,7 @@ class UserSettingsController extends ChangeNotifier {
   }
 
   Future<void> clear() async {
-    _settings = UserSettingsModel(); // сброс к значениям по умолчанию
+    _settings = UserSettingsModel();
     await _prefs.remove(_settingsKey);
     notifyListeners();
   }

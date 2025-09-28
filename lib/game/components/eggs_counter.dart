@@ -38,9 +38,8 @@ class EggCounterWidget extends PositionComponent
     );
     add(text);
 
-    // Весь EggCounterWidget фиксируем в левом верхнем углу
     anchor = Anchor.topLeft;
-    position = Vector2(8, 8); // отступ от левого и верхнего края
+    position = Vector2(8, 8);
   }
 
   void updateCount(int value, int target) {

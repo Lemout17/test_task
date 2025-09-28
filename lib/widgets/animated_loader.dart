@@ -95,7 +95,6 @@ class _AnimatedGradientLoaderState extends State<AnimatedGradientLoader>
                 child: Stack(
                   alignment: Alignment.centerLeft,
                   children: [
-                    // Фон
                     Container(
                       width: fullWidth,
                       height: widget.height,
@@ -106,8 +105,6 @@ class _AnimatedGradientLoaderState extends State<AnimatedGradientLoader>
                         ),
                       ),
                     ),
-
-                    // Заполнение градиентом
                     ClipRRect(
                       borderRadius: BorderRadius.circular(
                         widget.borderRadiusInner,
