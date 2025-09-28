@@ -21,8 +21,12 @@ class Assets {
   static const String egg2 = 'egg2.png';
   static const String egg3 = 'egg3.png';
   static const String egg4 = 'egg4.png';
+  static const String frostEgg = 'frost_egg.png';
+  static const String flameEgg = 'flame_egg.png';
+  static const String poisonEgg = 'poison_egg.png';
 
   // Chickens
   static const String chicken1 = 'chicken1.png';
   static const String chicken2 = 'chicken2.png';
+  static const String chickens = 'chickens.png';
 }

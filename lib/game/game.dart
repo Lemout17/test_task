@@ -31,6 +31,11 @@ class CatchGame extends FlameGame
   final UserSettingsModel settings;
   final UserModel user;
 
+  bool slowMotionActive = false;
+  double slowMotionTimer = 0;
+
+  int missedNormalEggs = 0;
+
   CatchGame({
     super.children,
     super.world,
@@ -69,22 +74,39 @@ class CatchGame extends FlameGame
     add(basket);
   }
 
+  void activateSlowMotion(double duration) {
+    slowMotionActive = true;
+    slowMotionTimer = duration;
+  }
+
   @override
   void update(double dt) {
     super.update(dt);
-    spawnTimer += dt;
 
+    if (slowMotionActive) {
+      slowMotionTimer -= dt;
+      if (slowMotionTimer <= 0) {
+        slowMotionActive = false;
+      }
+    }
+
+    spawnTimer += dt;
     if (spawnTimer >= level.spawnSpeed) {
       spawnTimer = 0;
       spawnEggWave();
     }
 
-    if (lives <= 0) {
-      loseGame();
-    }
+    if (lives <= 0) loseGame();
+    if (caughtEggs >= level.eggTarget) winGame();
+  }
 
-    if (caughtEggs >= level.eggTarget) {
-      winGame();
+  void missedEgg(Egg egg) {
+    if (egg.type == EggType.normal) {
+      missedNormalEggs++;
+      if (missedNormalEggs >= 10) {
+        missedNormalEggs = 0;
+        loseLife();
+      }
     }
   }
 
@@ -93,15 +115,40 @@ class CatchGame extends FlameGame
     for (int i = 0; i < eggsCount; i++) {
       final x = 20 + _rand.nextDouble() * (size.x - 40);
 
-      final egg = Egg()
+      EggType type = EggType.normal;
+      double r = _rand.nextDouble();
+
+      if (r < 0.15) {
+        type = EggType.poison; // 15%
+      } else if (r < 0.25) {
+        type = EggType.frost; // 10%
+      } else if (r < 0.30) {
+        type = EggType.flame; // 5%
+      }
+
+      final egg = Egg(type: type)
         ..position = Vector2(x, -10)
         ..anchor = Anchor.center;
 
       final baseSpeed = level.eggFallSpeed + caughtEggs * 1.0;
-      egg.velocity = Vector2(0, baseSpeed + _rand.nextDouble() * 40);
+      egg.baseVelocity = Vector2(0, baseSpeed + _rand.nextDouble() * 40);
 
       add(egg);
     }
+  }
+
+  void catchEgg(int points) {
+    caughtEggs += 1;
+    score += points * 10;
+    coins += 2;
+
+    eggCounter.updateCount(caughtEggs, level.eggTarget);
+    coinCounter.updateCount(coins);
+  }
+
+  void addCoins(int value) {
+    coins += value;
+    coinCounter.updateCount(coins);
   }
 
   @override
@@ -111,8 +158,9 @@ class CatchGame extends FlameGame
 
     final halfWidth = basket.size.x / 2;
     if (basket.position.x < halfWidth) basket.position.x = halfWidth;
-    if (basket.position.x > size.x - halfWidth)
+    if (basket.position.x > size.x - halfWidth) {
       basket.position.x = size.x - halfWidth;
+    }
   }
 
   @override
@@ -121,19 +169,9 @@ class CatchGame extends FlameGame
     basket.position.x = pos.x;
   }
 
-  /// Ловим яйцо: увеличиваем пойманные яйца, очки и монеты
-  void catchEgg(int points) {
-    caughtEggs += 1;
-    score += points;
-    coins += 2; // добавляем 2 коина за яйцо
-
-    eggCounter.updateCount(caughtEggs, level.eggTarget);
-    coinCounter.updateCount(coins);
-  }
-
   void loseLife() {
     lives -= 1;
-    livesCounter.updateCount(lives); // обновляем LivesCounter
+    livesCounter.updateCount(lives);
   }
 
   void fullRestart() {
@@ -144,6 +182,7 @@ class CatchGame extends FlameGame
     caughtEggs = 0;
     lives = 5;
     coins = 0;
+    missedNormalEggs = 0;
 
     eggCounter.updateCount(0, level.eggTarget);
     coinCounter.updateCount(0);

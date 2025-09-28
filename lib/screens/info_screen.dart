@@ -4,6 +4,7 @@ import 'package:test_task/utils/layout_wrapper.dart';
 import 'package:test_task/utils/size_config.dart';
 import 'package:test_task/widgets/common/app_header.dart';
 import 'package:test_task/widgets/common/menu_container.dart';
+import 'package:test_task/widgets/info_tile.dart';
 
 class InfoScreen extends StatelessWidget {
   const InfoScreen({super.key});
@@ -31,12 +32,39 @@ class InfoScreen extends StatelessWidget {
                           'how to play',
                           style: Theme.of(context).textTheme.headlineMedium,
                         ),
-                        Spacer(),
-                        Text(
-                          'text',
-                          style: Theme.of(context).textTheme.headlineSmall,
+                        SizedBox(height: SizeConfig.h(2.5)),
+                        Flexible(
+                          child: Text(
+                            'Catch falling eggs with your basket to complete the level.Every tenth missed egg takes away 1 life.',
+                            style: Theme.of(context).textTheme.headlineSmall,
+                          ),
                         ),
-                        Spacer(),
+                        SizedBox(height: SizeConfig.h(2.5)),
+                        InfoTile(
+                          title: 'Frost Egg',
+                          asset: Assets.frostEgg,
+                          text:
+                              'slows down the speed of egg falls for 5 seconds',
+                        ),
+                        SizedBox(height: SizeConfig.h(1.5)),
+                        InfoTile(
+                          title: 'Flame Egg',
+                          asset: Assets.flameEgg,
+                          text: 'doubles the number of coins and points',
+                        ),
+                        SizedBox(height: SizeConfig.h(1.5)),
+                        InfoTile(
+                          title: 'Poison Egg',
+                          asset: Assets.poisonEgg,
+                          text: 'takes one life',
+                        ),
+                        SizedBox(height: SizeConfig.h(1.5)),
+                        Flexible(
+                          flex: 2,
+                          child: Image.asset(
+                            'assets/images/${Assets.chickens}',
+                          ),
+                        ),
                       ],
                     ),
                   ),

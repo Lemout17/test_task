@@ -4,7 +4,7 @@ class Levels {
   static final List<LevelModel> levels = List.generate(9, (index) {
     final levelNumber = index + 1;
 
-    final eggTarget = 20 + index * 6;
+    final eggTarget = 30 + index * 6;
     final spawnSpeed = 1.5 - index * 0.1;
     final eggFallSpeed = 100.0 + index * 20;
 

@@ -17,27 +17,27 @@ class ShopItemModel {
 
 final shopItemsList = <ShopItemModel>[
   ShopItemModel(
-    name: 'Green Egg',
+    name: 'Yellow Egg',
     image: Assets.egg1,
     price: 0,
     content: UnlockedContent.egg1,
   ),
   ShopItemModel(
-    name: 'Yellow Egg',
+    name: 'Purple Egg',
     image: Assets.egg2,
-    price: 100,
+    price: 200,
     content: UnlockedContent.egg2,
   ),
   ShopItemModel(
-    name: 'Purple Egg',
+    name: 'Red Egg',
     image: Assets.egg3,
-    price: 150,
+    price: 300,
     content: UnlockedContent.egg3,
   ),
   ShopItemModel(
-    name: 'Red Egg',
+    name: 'Orange Egg',
     image: Assets.egg4,
-    price: 200,
+    price: 400,
     content: UnlockedContent.egg4,
   ),
   ShopItemModel(
