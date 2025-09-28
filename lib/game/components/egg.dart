@@ -29,7 +29,6 @@ class Egg extends SpriteComponent
         asset = Assets.poisonEgg;
         break;
       case EggType.normal:
-      default:
         asset = gameRef.settings.egg;
     }
 
@@ -53,10 +52,8 @@ class Egg extends SpriteComponent
       caught = true;
       removeFromParent();
 
-      gameRef.missedEgg(this);
-
-      if (type == EggType.poison) {
-        gameRef.loseLife();
+      if (type == EggType.normal) {
+        gameRef.missedEgg(this);
       }
     }
   }
@@ -83,7 +80,6 @@ class Egg extends SpriteComponent
           gameRef.loseLife();
           break;
         case EggType.normal:
-        default:
           gameRef.catchEgg(1);
           gameRef.addCoins(2);
           break;
