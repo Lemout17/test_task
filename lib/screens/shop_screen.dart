@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_task/bloc/app/app_cubit.dart';
@@ -32,6 +34,9 @@ class ShopScreen extends StatelessWidget {
                     final unlocked = state.userSettings.unlockedContents;
                     final bg = state.userSettings.bg;
                     final egg = state.userSettings.egg;
+                    log('egg - $egg');
+                    log('bg - $bg');
+                    log('unlocked - $unlocked');
 
                     return MenuContainer(
                       child: Column(
@@ -63,9 +68,12 @@ class ShopScreen extends StatelessWidget {
                               final isBackground = item.name.contains(
                                 'Background',
                               );
-                              final isUsed =
-                                  (isBackground ? bg : egg) ==
-                                  item.content.name;
+                              final isUsed = (isBackground ? bg : egg).contains(
+                                item.content.name,
+                              );
+
+                              log('isUsed - $isUsed');
+                              log('item.content.name - ${item.content.name}');
 
                               return ShopItem(
                                 item: item,

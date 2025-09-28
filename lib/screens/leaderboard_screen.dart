@@ -39,10 +39,10 @@ class LeaderboardScreen extends StatelessWidget {
                         BlocBuilder<AppCubit, AppState>(
                           builder: (context, state) {
                             final currentPlayer = state.user;
-                            final sortedPlayers = [
-                              ...playersList,
-                              currentPlayer,
-                            ]..sort((a, b) => b.score.compareTo(a.score));
+                            final sortedPlayers =
+                                [...playersList, currentPlayer]..sort(
+                                  (a, b) => b.bestScore.compareTo(a.bestScore),
+                                );
 
                             return Expanded(
                               child: ListView.builder(

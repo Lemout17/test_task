@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:test_task/const/levels.dart';
 import 'package:test_task/models/shop_item_model.dart';
 import 'package:test_task/models/user_model.dart';
 import 'package:test_task/models/user_settings_model.dart';
@@ -39,15 +40,18 @@ class AppCubit extends Cubit<AppState> {
   Future<void> updateUser({
     String? username,
     String? email,
-    String? avatar,
+    AvatarType? avatar,
     int? score,
+    int? bestScore,
   }) async {
     final updatedUser = state.user.copyWith(
       username: username,
       email: email,
       avatar: avatar,
       score: score,
+      bestScore: bestScore,
     );
+
     emit(state.copyWith(user: updatedUser, userSettings: state.userSettings));
     await _prefs.setString(_userKey, jsonEncode(updatedUser.toJson()));
   }
@@ -74,6 +78,7 @@ class AppCubit extends Cubit<AppState> {
       currentLevel: currentLevel,
       unlockedContents: unlockedContents,
     );
+
     emit(state.copyWith(user: state.user, userSettings: updatedSettings));
     await _prefs.setString(_settingsKey, jsonEncode(updatedSettings.toJson()));
   }
@@ -94,24 +99,45 @@ class AppCubit extends Cubit<AppState> {
         updateSettings(
           coins: coins - item.price,
           unlockedContents: newUnlocked,
-          bg: item.content.name,
+          bg: item.content.assetPath,
         );
       } else {
         updateSettings(
           coins: coins - item.price,
           unlockedContents: newUnlocked,
-          egg: item.content.name,
+          egg: item.content.assetPath,
         );
       }
     } else {
       if (isBackground) {
-        updateSettings(bg: item.content.name);
+        updateSettings(bg: item.content.assetPath);
       } else {
-        updateSettings(egg: item.content.name);
+        updateSettings(egg: item.content.assetPath);
       }
     }
 
     return true;
+  }
+
+  Future<void> incrementLevel(int level) async {
+    if (level == Levels.levels.length ||
+        state.userSettings.currentLevel > level) {
+      return;
+    }
+
+    updateSettings(currentLevel: level + 1);
+  }
+
+  Future<void> saveScore(int score) async {
+    if (state.user.bestScore < score) {
+      updateUser(bestScore: score);
+    }
+
+    updateUser(score: score);
+  }
+
+  Future<void> incrementCoins(int coins) async {
+    updateSettings(coins: state.userSettings.coins + coins);
   }
 
   Future<void> resetSettings() async {

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_task/bloc/app/app_cubit.dart';
 import 'package:test_task/const/assets.dart';
+import 'package:test_task/models/user_model.dart';
 import 'package:test_task/theme/app_colors.dart';
 import 'package:test_task/utils/layout_wrapper.dart';
 import 'package:test_task/utils/size_config.dart';
@@ -28,7 +29,7 @@ class AvatarScreen extends StatelessWidget {
                 BlocBuilder<AppCubit, AppState>(
                   builder: (context, state) {
                     final avatar = state.user.avatar;
-                    final avatars = [Assets.chicken1, Assets.chicken2];
+                    final avatars = AvatarType.values;
 
                     return MenuContainer(
                       child: Column(
@@ -42,7 +43,7 @@ class AvatarScreen extends StatelessWidget {
                           SizedBox(height: SizeConfig.h(3)),
                           GridView.builder(
                             shrinkWrap: true,
-                            physics: NeverScrollableScrollPhysics(),
+                            physics: const NeverScrollableScrollPhysics(),
                             padding: EdgeInsets.all(SizeConfig.w(5)),
                             gridDelegate:
                                 SliverGridDelegateWithFixedCrossAxisCount(
@@ -53,13 +54,13 @@ class AvatarScreen extends StatelessWidget {
                                 ),
                             itemCount: avatars.length,
                             itemBuilder: (context, index) {
-                              final asset = avatars[index];
-                              final isSelected = avatar == asset;
+                              final avatarEnum = avatars[index];
+                              final isSelected = avatar == avatarEnum;
 
                               return GestureDetector(
                                 onTap: () {
                                   context.read<AppCubit>().updateUser(
-                                    avatar: asset,
+                                    avatar: avatarEnum,
                                   );
                                 },
                                 child: Container(
@@ -77,7 +78,7 @@ class AvatarScreen extends StatelessWidget {
                                         : Colors.transparent,
                                   ),
                                   child: Image.asset(
-                                    asset,
+                                    'assets/images/${avatarEnum.assetPath}',
                                     fit: BoxFit.contain,
                                   ),
                                 ),

@@ -30,15 +30,20 @@ class PlayerTile extends StatelessWidget {
                 : null,
           ),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              SizedBox(),
-              Text(
-                player.username,
-                style: Theme.of(context).textTheme.headlineSmall,
+              SizedBox(width: SizeConfig.w(15)),
+              Expanded(
+                child: Text(
+                  textAlign: TextAlign.left,
+                  player.username.isEmpty ? 'You' : player.username,
+                  style: Theme.of(context).textTheme.headlineSmall,
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
+              SizedBox(width: SizeConfig.w(10)),
               Text(
-                player.score.toString(),
+                player.bestScore.toString(),
                 style: Theme.of(context).textTheme.headlineSmall,
               ),
             ],
@@ -52,13 +57,13 @@ class PlayerTile extends StatelessWidget {
           ),
           decoration: BoxDecoration(
             image: DecorationImage(
-              image: AssetImage(Assets.buttonWrapper),
+              image: AssetImage('assets/images/${Assets.buttonWrapper}'),
               fit: BoxFit.contain,
               alignment: AlignmentGeometry.centerLeft,
             ),
           ),
           child: Image.asset(
-            player.avatar,
+            'assets/images/${player.avatar.assetPath}',
             fit: BoxFit.contain,
             width: double.infinity,
             height: double.infinity,

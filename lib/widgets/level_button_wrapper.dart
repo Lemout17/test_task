@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:test_task/const/assets.dart';
 import 'package:test_task/models/level_model.dart';
+import 'package:test_task/navigation/routes.dart';
 import 'package:test_task/utils/size_config.dart';
 
 class LevelButtonWrapper extends StatelessWidget {
@@ -19,14 +21,16 @@ class LevelButtonWrapper extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
-      onTap: onTap,
+      onTap: () => context.goNamed(AppRouteNames.game, extra: level),
       child: Container(
         height: SizeConfig.h(10),
         width: SizeConfig.h(10),
         decoration: BoxDecoration(
           image: DecorationImage(
             image: AssetImage(
-              isLevelAvailable ? Assets.buttonWrapper : Assets.disabledLevel,
+              isLevelAvailable
+                  ? 'assets/images/${Assets.buttonWrapper}'
+                  : 'assets/images/${Assets.disabledLevel}',
             ),
             fit: BoxFit.contain,
           ),

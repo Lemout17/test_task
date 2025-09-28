@@ -1,6 +1,8 @@
 import 'package:go_router/go_router.dart';
+import 'package:test_task/models/level_model.dart';
 import 'package:test_task/navigation/routes.dart';
 import 'package:test_task/screens/avatar_screen.dart';
+import 'package:test_task/screens/game_screen.dart';
 import 'package:test_task/screens/info_screen.dart';
 import 'package:test_task/screens/leaderboard_screen.dart';
 import 'package:test_task/screens/level_select_screen.dart';
@@ -40,6 +42,17 @@ class AppRouter {
               path: AppRouteNames.selectLevel,
               name: AppRouteNames.selectLevel,
               builder: (context, state) => const LevelSelectScreen(),
+              routes: [
+                GoRoute(
+                  path: AppRouteNames.game,
+                  name: AppRouteNames.game,
+                  builder: (context, state) {
+                    final level = state.extra as LevelModel;
+
+                    return GameScreen(level: level);
+                  },
+                ),
+              ],
             ),
             GoRoute(
               path: AppRouteNames.info,
@@ -93,7 +106,6 @@ class AppRouter {
           ],
         ),
       ],
-      // errorBuilder: (context, state) => const NotFoundPage(),
     );
   }
 }

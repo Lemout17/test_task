@@ -23,7 +23,7 @@ class ButtonWrapper extends StatelessWidget {
         height: height ?? SizeConfig.h(15),
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage(Assets.button),
+            image: AssetImage('assets/images/${Assets.button}'),
             fit: BoxFit.contain,
           ),
         ),

@@ -29,7 +29,7 @@ class ShopItem extends StatelessWidget {
         padding: EdgeInsets.all(SizeConfig.w(isBackground ? 4.5 : 8)),
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage(Assets.buttonWrapper),
+            image: AssetImage('assets/images/${Assets.buttonWrapper}'),
             fit: BoxFit.contain,
           ),
           borderRadius: BorderRadius.circular(SizeConfig.w(5)),
@@ -44,7 +44,10 @@ class ShopItem extends StatelessWidget {
             Expanded(
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(SizeConfig.w(2)),
-                child: Image.asset(item.image, fit: BoxFit.contain),
+                child: Image.asset(
+                  'assets/images/${item.image}',
+                  fit: BoxFit.contain,
+                ),
               ),
             ),
             if (item.price != 0 && !isUnlockedContent) ...[
@@ -57,7 +60,10 @@ class ShopItem extends StatelessWidget {
                     style: Theme.of(context).textTheme.bodySmall,
                   ),
                   SizedBox(width: SizeConfig.w(1)),
-                  Image.asset(Assets.coin, height: SizeConfig.h(2)),
+                  Image.asset(
+                    'assets/images/${Assets.coin}',
+                    height: SizeConfig.h(2),
+                  ),
                 ],
               ),
             ],

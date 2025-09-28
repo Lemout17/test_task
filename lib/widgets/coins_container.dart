@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_task/bloc/app/app_cubit.dart';
+import 'package:test_task/const/assets.dart';
 import 'package:test_task/theme/app_colors.dart';
 import 'package:test_task/utils/size_config.dart';
 
@@ -37,7 +38,7 @@ class CoinsContainer extends StatelessWidget {
             Positioned(
               right: SizeConfig.w(-4),
               child: Image.asset(
-                'assets/images/coin.png',
+                'assets/images/${Assets.coin}',
                 height: SizeConfig.h(7),
               ),
             ),

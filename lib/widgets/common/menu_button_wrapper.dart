@@ -18,7 +18,7 @@ class MenuButtonWrapper extends StatelessWidget {
         width: SizeConfig.h(10),
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage(Assets.buttonWrapper),
+            image: AssetImage('assets/images/${Assets.buttonWrapper}'),
             fit: BoxFit.contain,
           ),
         ),

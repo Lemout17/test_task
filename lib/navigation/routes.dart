@@ -11,4 +11,5 @@ class AppRouteNames {
   static const privacy = '/privacy';
   static const terms = '/terms';
   static const selectLevel = '/select-level';
+  static const game = '/game';
 }

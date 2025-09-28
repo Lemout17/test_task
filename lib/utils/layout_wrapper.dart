@@ -39,7 +39,10 @@ class _BackgroundWrapperState extends State<BackgroundWrapper>
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (widget.backgroundUrl != null) {
-        precacheImage(AssetImage(widget.backgroundUrl!), context).then((_) {
+        precacheImage(
+          AssetImage('assets/images/${widget.backgroundUrl!}'),
+          context,
+        ).then((_) {
           if (mounted) {
             setState(() {
               _isImageLoaded = true;
@@ -80,7 +83,7 @@ class _BackgroundWrapperState extends State<BackgroundWrapper>
             opacity: _isImageLoaded ? 1.0 : 0.0,
             duration: const Duration(milliseconds: 500),
             child: Image.asset(
-              widget.backgroundUrl!,
+              'assets/images/${widget.backgroundUrl!}',
               fit: BoxFit.cover,
               width: double.infinity,
               height: double.infinity,

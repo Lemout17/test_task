@@ -81,12 +81,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 padding: EdgeInsets.all(SizeConfig.h(3)),
                                 decoration: BoxDecoration(
                                   image: DecorationImage(
-                                    image: AssetImage(Assets.buttonWrapper),
+                                    image: AssetImage(
+                                      'assets/images/${Assets.buttonWrapper}',
+                                    ),
                                   ),
                                 ),
                                 child: ClipOval(
                                   child: Image.asset(
-                                    avatar,
+                                    'assets/images/${avatar.assetPath}',
                                     fit: BoxFit.contain,
                                     width: double.infinity,
                                     height: double.infinity,

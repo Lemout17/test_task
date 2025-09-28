@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:test_task/bloc/app/app_cubit.dart';
 import 'package:test_task/const/assets.dart';
 import 'package:test_task/const/levels.dart';
 import 'package:test_task/utils/layout_wrapper.dart';
@@ -28,22 +30,28 @@ class LevelSelectScreen extends StatelessWidget {
                   style: Theme.of(context).textTheme.headlineMedium,
                 ),
                 SizedBox(height: SizeConfig.h(8)),
-                GridView.builder(
-                  physics: const NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
-                    crossAxisSpacing: 15,
-                    mainAxisSpacing: 35,
-                  ),
-                  itemCount: Levels.levels.length,
-                  itemBuilder: (context, index) {
-                    final level = Levels.levels[index];
+                BlocBuilder<AppCubit, AppState>(
+                  builder: (context, state) {
+                    final currentLevel = state.userSettings.currentLevel;
 
-                    return LevelButtonWrapper(
-                      level: level,
-                      isLevelAvailable: true,
-                      onTap: () {},
+                    return GridView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 3,
+                        crossAxisSpacing: 15,
+                        mainAxisSpacing: 35,
+                      ),
+                      itemCount: Levels.levels.length,
+                      itemBuilder: (context, index) {
+                        final level = Levels.levels[index];
+                        final isLevelAvailable = currentLevel >= level.level;
+
+                        return LevelButtonWrapper(
+                          level: level,
+                          isLevelAvailable: isLevelAvailable,
+                        );
+                      },
                     );
                   },
                 ),
